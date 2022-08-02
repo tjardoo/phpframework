@@ -1,0 +1,16 @@
+{
+    "name": "tjardo/php-framework",
+    "autoload": {
+        "psr-4": {
+            "Tjardo\\PhpFramework\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tjardo",
+            "email": "info@tjardo.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
