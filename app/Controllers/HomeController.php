@@ -14,14 +14,16 @@ class HomeController
     {
         try {
             $db = new PDO('mysql:host=localhost;dbname=php_framework', 'root', '', [
-
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
             ]);
 
             $query = 'SELECT * FROM users';
 
-            $statement = $db->query($query);
-
-            var_dump($statement->fetchAll());
+            foreach ($db->query($query)->fetchAll() as $user) {
+                echo '<pre>';
+                var_dump($user);
+                echo '</pre>';
+            }
         } catch (PDOException $exception) {
             throw new PDOException($exception->getMessage(), $exception->getCode());
         }
