@@ -8,8 +8,8 @@ use App\View;
 
 class HomeController
 {
-    public function index(): string
+    public function index(): View
     {
-        return (new View('welcome'))->render();
+        return View::make('welcome');
     }
 }
