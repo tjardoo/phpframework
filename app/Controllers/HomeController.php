@@ -22,24 +22,22 @@ class HomeController
 
             $statement = $db->prepare($query);
 
-            $statement->execute([
-                'email' => 'demo5@example.org',
-                'firstName' => 'Demo',
-                'lastName' => 'Five',
-                'isActive' => true,
-            ]);
+            $isActive = false;
+
+            $statement->bindValue('email', 'demo5@example.org');
+            $statement->bindValue('firstName', 'Demo');
+            $statement->bindValue('lastName', 'Five');
+            $statement->bindParam('isActive', $isActive, PDO::PARAM_BOOL);
+
+            $isActive = true;
+
+            $statement->execute();
 
             $id = $db->lastInsertId();
 
-            var_dump($id);
+            $user = $db->query('SELECT * FROM users where id = ' . $id)->fetch();
 
-            // $query = 'SELECT * FROM users';
-
-            // foreach ($db->query($query)->fetchAll() as $user) {
-            //     echo '<pre>';
-            //     var_dump($user);
-            //     echo '</pre>';
-            // }
+            var_dump($user);
         } catch (PDOException $exception) {
             throw new PDOException($exception->getMessage(), $exception->getCode());
         }
