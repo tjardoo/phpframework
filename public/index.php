@@ -1,31 +1,22 @@
 <?php
 
+use App\App;
+use App\Router;
 use App\Controllers\HomeController;
 use App\Controllers\TaskController;
-use App\Exceptions\RouteNotFoundException;
-use App\Router;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 define('VIEW_PATH', __DIR__ . '/../views');
 
-try {
-    $router = new Router();
+$router = new Router();
 
-    $router
-        ->get('/', [HomeController::class, 'index'])
-        ->get('/task', [TaskController::class, 'index']);
+$router
+    ->get('/', [HomeController::class, 'index'])
+    ->get('/task', [TaskController::class, 'index']);
 
-    $router->register('get', '/test', function () {
-        echo 'Test';
-    });
+$router->register('get', '/test', function () {
+    echo 'Test';
+});
 
-    echo $router->resolve(
-        $_SERVER['REQUEST_URI'],
-        strtolower($_SERVER['REQUEST_METHOD']),
-    );
-} catch (RouteNotFoundException) {
-    http_response_code(404);
-
-    echo '404';
-}
+(new App($router, ['uri' => $_SERVER['REQUEST_URI'], 'method' => $_SERVER['REQUEST_METHOD']]))->run();
