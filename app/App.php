@@ -8,10 +8,19 @@ use App\Exceptions\RouteNotFoundException;
 
 class App
 {
+    private static $db;
+
     public function __construct(
         protected Router $router,
         protected array $request,
+        protected Config $config,
     ) {
+        static::$db = new DB($config->db ?? []);
+    }
+
+    public static function db(): DB
+    {
+        return static::$db;
     }
 
     public function run()

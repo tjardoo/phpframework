@@ -1,6 +1,7 @@
 <?php
 
 use App\App;
+use App\Config;
 use App\Router;
 use App\Controllers\HomeController;
 use App\Controllers\TaskController;
@@ -19,4 +20,8 @@ $router->register('get', '/test', function () {
     echo 'Test';
 });
 
-(new App($router, ['uri' => $_SERVER['REQUEST_URI'], 'method' => $_SERVER['REQUEST_METHOD']]))->run();
+(new App(
+    $router,
+    ['uri' => $_SERVER['REQUEST_URI'], 'method' => $_SERVER['REQUEST_METHOD']],
+    new Config([])
+))->run();
