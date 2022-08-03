@@ -6,18 +6,20 @@ namespace App\Controllers;
 
 use App\App;
 use App\DB;
+use App\Models\User;
 use App\View;
+use Throwable;
 
 class HomeController
 {
     public function index(): View
     {
-        $db = App::db();
+        $user = new User();
+        $user = $user->find(1);
 
-        $users = $db->query('SELECT * FROM users')->fetchAll();
-
-        var_dump($users);
-
-        return View::make('welcome', ['foo' => 'bar']);
+        return View::make('welcome', [
+            'foo' => 'bar',
+            'user' => $user,
+        ]);
     }
 }
