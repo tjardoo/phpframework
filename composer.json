@@ -2,7 +2,7 @@
     "name": "tjardo/php-framework",
     "autoload": {
         "psr-4": {
-            "Tjardo\\PhpFramework\\": "app/"
+            "App\\": "app/"
         }
     },
     "authors": [
