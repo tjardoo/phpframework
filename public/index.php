@@ -2,6 +2,7 @@
 
 use App\App;
 use App\Config;
+use App\Container;
 use App\Router;
 use Dotenv\Dotenv;
 use App\Controllers\HomeController;
@@ -14,7 +15,8 @@ $dotenv->load();
 
 define('VIEW_PATH', __DIR__ . '/../views');
 
-$router = new Router();
+$container = new Container();
+$router = new Router($container);
 
 $router
     ->get('/', [HomeController::class, 'index'])
