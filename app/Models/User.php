@@ -16,9 +16,9 @@ class User extends Model
             VALUES (?, ?, ?, ?)'
         );
 
-        $statement->execute([$email, $firstName, $lastName, $isActive]);
+        $statement->execute([$email, $firstName, $lastName, (int) $isActive]);
 
-        return (int) $this->db->lastInsertedId();
+        return (int) $this->db->lastInsertId();
     }
 
     public function find(int $userId): array
