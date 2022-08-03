@@ -34,8 +34,13 @@ class View
         return (string) ob_get_clean();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
+    }
+
+    public function __get(string $name): ?string
+    {
+        return $this->parameters[$name] ?? null;
     }
 }

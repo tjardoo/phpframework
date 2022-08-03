@@ -10,6 +10,6 @@ class HomeController
 {
     public function index(): View
     {
-        return View::make('welcome');
+        return View::make('welcome', ['foo' => 'bar']);
     }
 }
