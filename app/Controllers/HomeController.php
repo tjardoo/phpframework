@@ -17,13 +17,29 @@ class HomeController
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
             ]);
 
-            $query = 'SELECT * FROM users';
+            $query = 'INSERT INTO USERS (email, first_name, last_name, is_active)
+                VALUES (:email, :firstName, :lastName, :isActive)';
 
-            foreach ($db->query($query)->fetchAll() as $user) {
-                echo '<pre>';
-                var_dump($user);
-                echo '</pre>';
-            }
+            $statement = $db->prepare($query);
+
+            $statement->execute([
+                'email' => 'demo5@example.org',
+                'firstName' => 'Demo',
+                'lastName' => 'Five',
+                'isActive' => true,
+            ]);
+
+            $id = $db->lastInsertId();
+
+            var_dump($id);
+
+            // $query = 'SELECT * FROM users';
+
+            // foreach ($db->query($query)->fetchAll() as $user) {
+            //     echo '<pre>';
+            //     var_dump($user);
+            //     echo '</pre>';
+            // }
         } catch (PDOException $exception) {
             throw new PDOException($exception->getMessage(), $exception->getCode());
         }
