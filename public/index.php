@@ -7,6 +7,8 @@ use App\Router;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+define('VIEW_PATH', __DIR__ . '/../views');
+
 try {
     $router = new Router();
 
