@@ -15,6 +15,8 @@ $dotenv->load();
 
 define('VIEW_PATH', __DIR__ . '/../views');
 
+session_start();
+
 $container = new Container();
 $router = new Router($container);
 
