@@ -21,3 +21,4 @@ This PHP framework is build to get a better understanding of PHP. The author has
 [ ] Cookies
 [ ] Layouts
 [ ] dd
+[ ] config

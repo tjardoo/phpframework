@@ -8,6 +8,8 @@ use App\Exceptions\ViewNotFoundException;
 
 class View
 {
+    public const BASE_LAYOUT = 'layouts/base';
+
     public function __construct(
         protected string $view,
         protected array $parameters = [],
@@ -19,7 +21,7 @@ class View
         return new static($view, $parameters);
     }
 
-    public function render(): string
+    public function render($includeBaseLayout = true): string
     {
         $viewPath = VIEW_PATH . '/' . $this->view . '.php';
 
@@ -33,7 +35,13 @@ class View
 
         ob_start();
 
-        include $viewPath;
+        if ($includeBaseLayout) {
+            $baseViewPath = VIEW_PATH . '/' . View::BASE_LAYOUT. '.php';
+
+            include $baseViewPath;
+        } else {
+            include $viewPath;
+        }
 
         return (string) ob_get_clean();
     }
