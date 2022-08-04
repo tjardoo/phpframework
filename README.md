@@ -14,7 +14,7 @@ This PHP framework is build to get a better understanding of PHP. The author has
 - [X] Exceptions
 - [ ] Enums
 - [ ] Models
-- [ ] Services
+- [X] Services
 - [ ] Entities
 - [ ] Uploads
 - [X] Sessions
@@ -23,3 +23,4 @@ This PHP framework is build to get a better understanding of PHP. The author has
 - [X] dd
 - [ ] config
 - [ ] Helpers
+- [X] Commands
