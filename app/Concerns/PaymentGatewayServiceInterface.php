@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Concerns;
 
-interface PaymentGateway
+interface PaymentGatewayServiceInterface
 {
     public function charge(int $amount): bool;
 }

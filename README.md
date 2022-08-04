@@ -19,3 +19,5 @@ This PHP framework is build to get a better understanding of PHP. The author has
 [ ] Uploads
 [ ] Sessions
 [ ] Cookies
+[ ] Layouts
+[ ] dd

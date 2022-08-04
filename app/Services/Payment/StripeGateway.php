@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\Payment;
 
-use App\Concerns\PaymentGateway;
+use App\Concerns\PaymentGatewayServiceInterface;
 
-class StripeGateway implements PaymentGateway
+class StripeGateway implements PaymentGatewayServiceInterface
 {
     public function charge(int $amount): bool
     {

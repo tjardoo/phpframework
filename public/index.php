@@ -27,6 +27,7 @@ $router->register('get', '/test', function () {
 });
 
 (new App(
+    $container,
     $router,
     ['uri' => $_SERVER['REQUEST_URI'], 'method' => $_SERVER['REQUEST_METHOD']],
     new Config([])

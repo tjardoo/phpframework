@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Concerns\PaymentGateway;
+use App\Concerns\PaymentGatewayServiceInterface;
 use App\Exceptions\RouteNotFoundException;
-use App\Services\Payment\StripeGateway;
+use App\Services\Payment\MollieGateway;
 
 class App
 {
     private static $db;
-    public static Container $container;
 
     public function __construct(
+        protected Container $container,
         protected Router $router,
         protected array $request,
         protected Config $config,
     ) {
         static::$db = new DB($config->db ?? []);
-        static::$container = new Container();
 
-        // static::$container->set(PaymentGateway::class, fn () => new StripeGateway());
+        $this->container->set(
+            PaymentGatewayServiceInterface::class,
+            fn (Container $container) => new MollieGateway()
+        );
     }
 
     public static function db(): DB
