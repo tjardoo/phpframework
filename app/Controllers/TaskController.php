@@ -10,9 +10,9 @@ class TaskController
 {
     public function index(): View
     {
-        $_SESSION['counter'] = ($_SESSION['counter'] ?? 0) + 1;
+        setcookie('demo_cookie', 'love', time() + 86400);
 
-        var_dump($_SESSION['counter']);
+        var_dump($_COOKIE);
 
         return View::make('tasks/index');
     }
