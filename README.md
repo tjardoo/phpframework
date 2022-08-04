@@ -18,8 +18,8 @@ This PHP framework is build to get a better understanding of PHP. The author has
 - [ ] Entities
 - [ ] Uploads
 - [X] Sessions
-- [ ] Cookies
+- [X] Cookies
 - [X] Layouts
-- [ ] dd
+- [X] dd
 - [ ] config
 - [ ] Helpers
