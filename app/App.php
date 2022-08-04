@@ -20,10 +20,7 @@ class App
     ) {
         static::$db = new DB($config->db ?? []);
 
-        $this->container->set(
-            PaymentGatewayServiceInterface::class,
-            fn (Container $container) => new MollieGateway()
-        );
+        $this->container->set(PaymentGatewayServiceInterface::class, MollieGateway::class);
     }
 
     public static function db(): DB
