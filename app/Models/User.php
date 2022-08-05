@@ -23,19 +23,6 @@ class User extends Model
         return (int) $this->db->lastInsertId();
     }
 
-    // public function create(string $email, string $firstName, string $lastName, bool $isActive = true): int
-    // {
-    //     $statement = $this->db->prepare(
-    //         'INSERT INTO users
-    //         (email, first_name, last_name, is_active)
-    //         VALUES (?, ?, ?, ?)'
-    //     );
-
-    //     $statement->execute([$email, $firstName, $lastName, (int) $isActive]);
-
-    //     return (int) $this->db->lastInsertId();
-    // }
-
     public function find(int $userId): array
     {
         $user = $this->db->createQueryBuilder()

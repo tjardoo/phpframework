@@ -24,3 +24,4 @@ This PHP framework is build to get a better understanding of PHP. The author has
 - [ ] config
 - [ ] Helpers
 - [X] Commands
+- [ ] Relations

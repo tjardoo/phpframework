@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\Task;
 use App\Models\User;
 use App\View;
 
@@ -11,17 +12,16 @@ class HomeController
 {
     public function index(): View
     {
-        // $users = (new User())->all();
-        // dd($users);
+        // $tasks = (new Task())->all();
+        // dd($tasks);
 
-        // $user = (new User())->create([
-        //     'email' => 'demo9@example.org',
-        //     'first_name' => 'Demo',
-        //     'last_name' => 'Nine',
-        //     'is_active' => 0,
+        // $userId = (new Task())->create([
+        //     'user_id' => 2,
+        //     'description' => 'This is task Five',
+        //     'completed_at' => '2022-08-05 00:00:00',
         // ]);
 
-        // dd($user);
+        // dd($userId);
 
         $user = (new User())->find(4);
 
