@@ -23,32 +23,12 @@ class HomeController
             ORMSetup::createAttributeMetadataConfiguration([__DIR__ . '/Entities'])
         );
 
-        $tasks = [
-            ['Task 11', null],
-            ['Task 12', new DateTime()],
-            ['Task 13', null],
-        ];
+        $user = $entityManager->find(User::class, 5);
 
-        $user = (new User())
-            ->setEmail('demo10@example.org')
-            ->setFirstName('Demo')
-            ->setLastName('Ten')
-            ->setisActive(true);
-
-        foreach ($tasks as [$description, $completedAt]) {
-            $task = (new Task())
-                ->setDescription($description)
-                ->setCompletedAt($completedAt);
-
-            $user->addTask($task);
-            $entityManager->persist($task);
-        }
-
-        $entityManager->persist($user);
+        $user->setLastName('Five Five');
+        $user->getTasks()->get(0)->setDescription('New task description');
 
         $entityManager->flush();
-
-        // $user = $entityManager->find(User::class, 1);
 
         dd($user);
 
