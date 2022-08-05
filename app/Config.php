@@ -15,11 +15,11 @@ class Config
     {
         $this->config = [
             'db' => [
-                'host' => $_ENV['DB_HOST'],
-                'user' => $_ENV['DB_USER'],
-                'pass' => $_ENV['DB_PASS'],
-                'database' => $_ENV['DB_DATABASE'],
-                'driver' => $_ENV['DB_DRIVER'] ?? 'mysql',
+                'host' => $env['DB_HOST'],
+                'user' => $env['DB_USER'],
+                'password' => $env['DB_PASS'],
+                'dbname' => $env['DB_DATABASE'],
+                'driver' => $env['DB_DRIVER'] ?? 'pdo_mysql',
             ],
         ];
     }

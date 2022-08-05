@@ -8,26 +8,42 @@ use App\Model;
 
 class User extends Model
 {
-    public function create(string $email, string $firstName, string $lastName, bool $isActive = true): int
+    public function all(): array
     {
-        $statement = $this->db->prepare(
-            'INSERT INTO users
-            (email, first_name, last_name, is_active)
-            VALUES (?, ?, ?, ?)'
-        );
+        return $this->db->createQueryBuilder()
+            ->select('id', 'email', 'first_name', 'last_name', 'is_active', 'created_at')
+            ->from('users')
+            ->fetchAllAssociative();
+    }
 
-        $statement->execute([$email, $firstName, $lastName, (int) $isActive]);
+    public function create(...$data): int
+    {
+        $this->db->insert('users', $data[0]);
 
         return (int) $this->db->lastInsertId();
     }
 
+    // public function create(string $email, string $firstName, string $lastName, bool $isActive = true): int
+    // {
+    //     $statement = $this->db->prepare(
+    //         'INSERT INTO users
+    //         (email, first_name, last_name, is_active)
+    //         VALUES (?, ?, ?, ?)'
+    //     );
+
+    //     $statement->execute([$email, $firstName, $lastName, (int) $isActive]);
+
+    //     return (int) $this->db->lastInsertId();
+    // }
+
     public function find(int $userId): array
     {
-        $statement = $this->db->prepare('SELECT * from users WHERE id=?');
-
-        $statement->execute([$userId]);
-
-        $user = $statement->fetch();
+        $user = $this->db->createQueryBuilder()
+            ->select('id', 'email', 'first_name', 'last_name', 'is_active', 'created_at')
+            ->from('users')
+            ->where('id = ?')
+            ->setParameter(0, $userId)
+            ->fetchAssociative();
 
         return $user ?? [];
     }

@@ -11,9 +11,19 @@ class HomeController
 {
     public function index(): View
     {
-        $user = (new User())->find(1);
+        // $users = (new User())->all();
+        // dd($users);
 
-        dd($user);
+        // $user = (new User())->create([
+        //     'email' => 'demo9@example.org',
+        //     'first_name' => 'Demo',
+        //     'last_name' => 'Nine',
+        //     'is_active' => 0,
+        // ]);
+
+        // dd($user);
+
+        $user = (new User())->find(4);
 
         return View::make('welcome', [
             'foo' => 'bar',
