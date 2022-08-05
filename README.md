@@ -1,8 +1,14 @@
 # PHP Framework
 
+## Note
+
+This NOT a framework that should be used in production.
+
 ## Introduction
 
-This PHP framework is build to get a better understanding of PHP. The author has multiple years of experience with Laravel but would like to know the core-function more in depth.
+This framework is build by the author go get a better understanding of the PHP fundamentals.
+
+The 'features' are selected by interest of the author. The author tried to add each 'feature' as a seperate commit.
 
 ## TODO
 
@@ -13,15 +19,15 @@ This PHP framework is build to get a better understanding of PHP. The author has
 - [X] Database
 - [X] Exceptions
 - [ ] Enums
-- [ ] Models
+- [X] Models
 - [X] Services
-- [ ] Entities
+- [X] Entities
 - [ ] Uploads
 - [X] Sessions
 - [X] Cookies
 - [X] Layouts
 - [X] dd
-- [ ] config
+- [X] config
 - [ ] Helpers
 - [X] Commands
-- [ ] Relations
+- [X] Relations
