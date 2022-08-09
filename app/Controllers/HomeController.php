@@ -23,14 +23,20 @@ class HomeController
             ORMSetup::createAttributeMetadataConfiguration([__DIR__ . '/Entities'])
         );
 
-        $user = $entityManager->find(User::class, 5);
+        $queryBuilder = $entityManager->createQueryBuilder();
 
-        $user->setLastName('Five Five');
-        $user->getTasks()->get(0)->setDescription('New task description');
+        $query = $queryBuilder->select('users.id', 'users.email', 'users.createdAt')
+            ->from(User::class, 'users')
+            ->where('users.id > :id')
+            ->setParameter('id', 2)
+            ->orderBy('users.createdAt', 'desc')
+            ->getQuery();
 
-        $entityManager->flush();
+        $users = $query->getResult();
 
-        dd($user);
+        var_dump($query->getDQL());
+
+        dd($users);
 
         return View::make('welcome', [
             'foo' => 'bar',
