@@ -15,9 +15,13 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 #[Entity]
 #[Table('users')]
+#[HasLifecycleCallbacks]
 class User
 {
     #[Id]
@@ -45,6 +49,12 @@ class User
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+    }
+
+    #[PrePersist]
+    public function onPrePersist(LifecycleEventArgs $args)
+    {
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): int
@@ -113,13 +123,6 @@ class User
     public function setisActive(bool $isActive): self
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
