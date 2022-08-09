@@ -20,7 +20,8 @@
         "psr/container": "2.0.x-dev",
         "doctrine/dbal": "3.4.x-dev",
         "doctrine/orm": "3.0.x-dev",
-        "symfony/cache": "6.2.x-dev"
+        "symfony/cache": "6.2.x-dev",
+        "doctrine/migrations": "3.6.x-dev"
     },
     "require-dev": {
         "symfony/var-dumper": "6.2.x-dev"
