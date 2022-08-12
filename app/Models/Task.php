@@ -4,34 +4,23 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Model;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
-    public function all(): array
+    protected $table = 'tasks';
+
+    protected $primaryKey = 'id';
+
+    public $incrementing = true;
+
+    public $keyType = 'integer';
+
+    public $timestamps = false;
+
+    public function user(): BelongsTo
     {
-        return $this->db->createQueryBuilder()
-            ->select('id', 'user_id', 'description', 'completed_at')
-            ->from('tasks')
-            ->fetchAllAssociative();
-    }
-
-    public function create(...$data): int
-    {
-        $this->db->insert('tasks', $data[0]);
-
-        return (int) $this->db->lastInsertId();
-    }
-
-    public function find(int $taskId): array
-    {
-        $task = $this->db->createQueryBuilder()
-            ->select('id', 'user_id', 'description', 'completed_at')
-            ->from('tasks')
-            ->where('id = ?')
-            ->setParameter(0, $taskId)
-            ->fetchAssociative();
-
-        return $task ?? [];
+        return $this->belongsTo(User::class);
     }
 }
