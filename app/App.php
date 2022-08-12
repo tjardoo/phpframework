@@ -8,10 +8,11 @@ use Dotenv\Dotenv;
 use App\Services\Payment\MollieGateway;
 use App\Exceptions\RouteNotFoundException;
 use App\Concerns\PaymentGatewayServiceInterface;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher;
 
 class App
 {
-    private static $db;
     private Config $config;
 
     public function __construct(
@@ -21,9 +22,14 @@ class App
     ) {
     }
 
-    public static function db(): DB
+    public function initDatabase(array $config)
     {
-        return static::$db;
+        $capsule = new Capsule();
+
+        $capsule->addConnection($config);
+        $capsule->setEventDispatcher(new Dispatcher());
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
     }
 
     public function boot(): static
@@ -33,7 +39,7 @@ class App
 
         $this->config = new Config($_ENV);
 
-        static::$db = new DB($this->config->db ?? []);
+        $this->initDatabase($this->config->db);
 
         $this->container->set(PaymentGatewayServiceInterface::class, MollieGateway::class);
 

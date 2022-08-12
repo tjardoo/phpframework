@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\Task;
 use App\View;
 
 class TaskController
 {
     public function index(): View
     {
-        setcookie('demo_cookie', 'love', time() + 86400);
+        $tasks = Task::query()->get();
 
-        var_dump($_COOKIE);
+        dd($tasks);
 
         return View::make('tasks/index');
     }
