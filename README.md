@@ -31,3 +31,7 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [ ] Helpers
 - [X] Commands
 - [X] Relations
+
+- [ ] Route file(s)
+- [ ] Blade templating
+- [ ] DTOs

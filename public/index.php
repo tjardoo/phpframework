@@ -1,6 +1,7 @@
 <?php
 
 use App\App;
+use App\Controllers\CurlController;
 use App\Router;
 use App\Controllers\HomeController;
 use App\Controllers\TaskController;
@@ -17,7 +18,8 @@ $router = new Router($container);
 
 $router
     ->get('/', [HomeController::class, 'index'])
-    ->get('/task', [TaskController::class, 'index']);
+    ->get('/task', [TaskController::class, 'index'])
+    ->get('/curl', [CurlController::class, 'index']);
 
 $router->register('get', '/test', function () {
     echo 'Test';
