@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App;
 
 use Dotenv\Dotenv;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
 use App\Services\Payment\MollieGateway;
 use App\Exceptions\RouteNotFoundException;
 use App\Concerns\PaymentGatewayServiceInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
-use Illuminate\Events\Dispatcher;
 
 class App
 {
@@ -27,7 +28,7 @@ class App
         $capsule = new Capsule();
 
         $capsule->addConnection($config);
-        $capsule->setEventDispatcher(new Dispatcher());
+        $capsule->setEventDispatcher(new Dispatcher($this->container));
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
     }
@@ -41,7 +42,7 @@ class App
 
         $this->initDatabase($this->config->db);
 
-        $this->container->set(PaymentGatewayServiceInterface::class, MollieGateway::class);
+        $this->container->bind(PaymentGatewayServiceInterface::class, MollieGateway::class);
 
         return $this;
     }

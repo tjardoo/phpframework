@@ -1,10 +1,10 @@
 <?php
 
 use App\App;
-use App\Container;
 use App\Router;
 use App\Controllers\HomeController;
 use App\Controllers\TaskController;
+use Illuminate\Container\Container;
 
 require __DIR__ . '/../vendor/autoload.php';
 
