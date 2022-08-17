@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use Dotenv\Dotenv;
+use Twig\Environment;
 use Illuminate\Events\Dispatcher;
+use Twig\Loader\FilesystemLoader;
 use Illuminate\Container\Container;
 use App\Services\DutchRailwayService;
 use App\Services\Payment\MollieGateway;
@@ -42,6 +44,13 @@ class App
         $this->config = new Config($_ENV);
 
         $this->initDatabase($this->config->db);
+
+        $loader = new FilesystemLoader(VIEW_PATH);
+        $twig = new Environment($loader, [
+            'cache' => STORAGE_PATH . '/cache',
+        ]);
+
+        $this->container->singleton(Environment::class, fn () => $twig);
 
         $this->container->bind(PaymentGatewayServiceInterface::class, MollieGateway::class);
 

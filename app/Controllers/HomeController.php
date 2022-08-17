@@ -5,23 +5,20 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\User;
-use App\View;
-use Carbon\Carbon;
+use Twig\Environment as Twig;
 
 class HomeController
 {
-    public function index(): View
-    {
-        $user = User::query()
-            ->create([
-                'email' => 'demo40@example.org',
-                'first_name' => 'Demo',
-                'last_name' => 'Fourty',
-                'is_active' => false,
-                // 'created_at' => Carbon::today()->startOfYear(),
-            ]);
+    public function __construct(
+        private Twig $twig,
+    ) {
+    }
 
-        return View::make('welcome', [
+    public function index(): string
+    {
+        $user = User::find(1);
+
+        return $this->twig->render('welcome.twig', [
             'foo' => 'bar',
             'user' => $user,
         ]);

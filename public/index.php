@@ -10,6 +10,7 @@ use Illuminate\Container\Container;
 require __DIR__ . '/../vendor/autoload.php';
 
 define('VIEW_PATH', __DIR__ . '/../views');
+define('STORAGE_PATH', __DIR__ . '/../storage');
 
 session_start();
 
