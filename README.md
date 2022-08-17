@@ -18,7 +18,7 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [X] Views
 - [X] Database
 - [X] Exceptions
-- [ ] Enums
+- [X] Enums
 - [X] Models
 - [X] Services
 - [X] Entities
@@ -34,4 +34,5 @@ The 'features' are selected by interest of the author. The author tried to add e
 
 - [ ] Route file(s)
 - [ ] Blade templating
-- [ ] DTOs
+- [X] DTOs
+- [X] Curl
