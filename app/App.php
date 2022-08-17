@@ -7,6 +7,7 @@ namespace App;
 use Dotenv\Dotenv;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
+use App\Services\DutchRailwayService;
 use App\Services\Payment\MollieGateway;
 use App\Exceptions\RouteNotFoundException;
 use App\Concerns\PaymentGatewayServiceInterface;
@@ -43,6 +44,8 @@ class App
         $this->initDatabase($this->config->db);
 
         $this->container->bind(PaymentGatewayServiceInterface::class, MollieGateway::class);
+
+        $this->container->bind(DutchRailwayService::class, fn () => new DutchRailwayService($this->config->api['ns_api_key']));
 
         return $this;
     }

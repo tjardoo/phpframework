@@ -24,6 +24,9 @@ class Config
                 'collation' => 'utf8_unicode_ci',
                 'prefix' => '',
             ],
+            'api' => [
+                'ns_api_key' => $_ENV['NS_API_KEY'],
+            ],
         ];
     }
 

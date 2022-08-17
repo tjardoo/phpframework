@@ -20,7 +20,8 @@
         "psr/container": "2.0.x-dev",
         "symfony/cache": "6.2.x-dev",
         "illuminate/database": "10.x-dev",
-        "illuminate/events": "10.x-dev"
+        "illuminate/events": "10.x-dev",
+        "guzzlehttp/guzzle": "7.4.x-dev"
     },
     "require-dev": {
         "symfony/var-dumper": "6.2.x-dev"
