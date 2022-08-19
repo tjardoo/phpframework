@@ -9,35 +9,40 @@ use App\Exceptions\RouteNotFoundException;
 
 class Router
 {
-    private array $routes;
+    private static array $routes;
 
     public function __construct(
         private Container $container
     ) {
     }
 
-    public function register(string $requestMethod, string $route, callable|array $action): self
+    public static function addRoute(string $method, string $uri, callable|array $action): void
     {
-        $this->routes[$requestMethod][$route] = $action;
+        $route = new Route($method, $uri, $action);
 
-        return $this;
+        self::register($route);
     }
 
-    public function get(string $route, callable|array $action): self
+    public static function register(Route $route): void
     {
-        return $this->register('get', $route, $action);
+        self::$routes[$route->method][$route->uri] = $route->action;
     }
 
-    public function post(string $route, callable|array $action): self
+    public static function get(string $route, callable|array $action): void
     {
-        return $this->register('post', $route, $action);
+        self::addRoute('get', $route, $action);
+    }
+
+    public static function post(string $route, callable|array $action): void
+    {
+        self::addRoute('post', $route, $action);
     }
 
     public function resolve(string $requestUri, string $requestMethod)
     {
         $route = explode('?', $requestUri)[0];
 
-        $action = $this->routes[$requestMethod][$route] ?? null;
+        $action = self::$routes[$requestMethod][$route] ?? null;
 
         if ($action == null) {
             throw new RouteNotFoundException();

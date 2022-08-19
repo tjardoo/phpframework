@@ -26,7 +26,7 @@ class App
     ) {
     }
 
-    public function initDatabase(array $config)
+    private function initDatabase(array $config): void
     {
         $capsule = new Capsule();
 
@@ -34,6 +34,11 @@ class App
         $capsule->setEventDispatcher(new Dispatcher($this->container));
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
+    }
+
+    private function registerRoutes(Router $router): void
+    {
+        (new RouteFileRegistar($router))->register(ROUTES_PATH . '/web.php');
     }
 
     public function boot(): static
@@ -44,6 +49,8 @@ class App
         $this->config = new Config($_ENV);
 
         $this->initDatabase($this->config->db);
+
+        $this->registerRoutes($this->router);
 
         $loader = new FilesystemLoader(VIEW_PATH);
         $twig = new Environment($loader, [
