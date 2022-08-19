@@ -23,4 +23,9 @@ class HomeController
             'user' => $user,
         ]);
     }
+
+    public function placeholderTester(string $foo): string
+    {
+        dd('placeholderTester: ' . $foo);
+    }
 }
