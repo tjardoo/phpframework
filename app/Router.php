@@ -80,6 +80,7 @@ class Router
 
     public function resolve(string $requestUri, string $requestMethod)
     {
+        $args = [];
         $route = explode('?', $requestUri)[0];
 
         if (str_ends_with($route, '/')) {
@@ -104,6 +105,8 @@ class Router
                 $pattern = str_replace(['{', '}'], '', $pattern);
 
                 if (preg_match($pattern, $route)) {
+                    $args = $this->getParametersFromUri($key, $route);
+
                     $action = self::$routes[$requestMethod][$key] ?? null;
                 }
             }
@@ -114,7 +117,7 @@ class Router
         }
 
         if (is_callable($action)) {
-            return call_user_func($action);
+            return call_user_func($action, ...$args);
         }
 
         if (is_array($action)) {
@@ -124,11 +127,44 @@ class Router
                 $class = $this->container->get($class);
 
                 if (method_exists($class, $method)) {
-                    return call_user_func_array([$class, $method], []);
+                    return call_user_func_array([$class, $method], $args);
                 }
             }
         }
 
         throw new RouteNotFoundException();
+    }
+
+    private function getParametersFromUri(string $uriDefinition, string $requestUri): array
+    {
+        $args = [];
+
+        preg_match_all("/(?<={).+?(?=})/", $uriDefinition, $paramMatches);
+
+        if (str_starts_with($uriDefinition, '/')) {
+            $uriDefinition = substr($uriDefinition, 1);
+        }
+
+        $uri = explode('/', $uriDefinition);
+
+        $indexNumber = [];
+
+        foreach ($uri as $index => $param) {
+            if (preg_match('/{.*}/', $param)) {
+                $indexNumber[] = $index;
+            }
+        }
+
+        if (str_starts_with($requestUri, '/')) {
+            $requestUri = substr($requestUri, 1);
+        }
+
+        $requestUri = explode('/', $requestUri);
+
+        foreach ($indexNumber as $key => $index) {
+            array_push($args, $requestUri[$index]);
+        }
+
+        return $args;
     }
 }

@@ -13,8 +13,8 @@ Route::match(['get', 'post'], '/get-post-example', function () {
     dd('Get post example route');
 });
 
-Route::get('/company/{company}/department/{department}', function () {
-    echo 'This is the value from the URL:';
+Route::get('/company/{company}/department/{department}', function ($company, $department) {
+    echo "Company: {$company}, department: {$department}";
 });
 
 Route::get('/test2/{value}', [HomeController::class, 'placeholderTester']);

@@ -24,8 +24,8 @@ class HomeController
         ]);
     }
 
-    public function placeholderTester(): string
+    public function placeholderTester(string $foo): string
     {
-        dd('placeholderTester');
+        dd('placeholderTester: ' . $foo);
     }
 }
