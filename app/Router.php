@@ -16,6 +16,11 @@ class Router
     ) {
     }
 
+    public function getRoutes(): array
+    {
+        return self::$routes;
+    }
+
     public static function addRoute(string $method, string $uri, callable|array $action): void
     {
         $route = new Route($method, $uri, $action);
@@ -25,24 +30,84 @@ class Router
 
     public static function register(Route $route): void
     {
-        self::$routes[$route->method][$route->uri] = $route->action;
-    }
+        $params = [];
+        $paramKeys = [];
 
-    public static function get(string $route, callable|array $action): void
-    {
-        self::addRoute('get', $route, $action);
-    }
+        preg_match_all("/(?<={).+?(?=})/", $route->uri, $paramMatches);
 
-    public static function post(string $route, callable|array $action): void
-    {
-        self::addRoute('post', $route, $action);
+        if (empty($paramMatches[0])) {
+            self::$routes[$route->method][$route->uri] = $route->action;
+
+            return;
+        }
+
+        foreach ($paramMatches[0] as $key) {
+            $paramKeys[] = $key;
+        }
+
+        if (str_starts_with($route->uri, '/')) {
+            $route->uri = substr($route->uri, 1);
+        }
+
+        $uri = explode('/', $route->uri);
+
+        $indexNumber = [];
+
+        foreach ($uri as $index => $param) {
+            if (preg_match('/{.*}/', $param)) {
+                $indexNumber[] = $index;
+            }
+        }
+
+        $requestUri = explode('/', $route->uri);
+
+        foreach ($indexNumber as $key => $index) {
+            if (empty($requestUri[$index])) {
+                return;
+            }
+
+            $params[$paramKeys[$key]] = $requestUri[$index];
+
+            $requestUri[$index] = "{.*}";
+        }
+
+        $requestUri = implode("/", $requestUri);
+
+        $requestUri = str_replace("/", '\\/', $requestUri);
+
+        self::$routes[$route->method][$requestUri] = $route->action;
     }
 
     public function resolve(string $requestUri, string $requestMethod)
     {
         $route = explode('?', $requestUri)[0];
 
+        if (str_ends_with($route, '/')) {
+            $route = substr_replace($route, '', -1);
+        }
+
+        // if (str_starts_with($route, '/')) {
+        //     $route = substr($route, 1);
+        // }
+
         $action = self::$routes[$requestMethod][$route] ?? null;
+
+        if ($action == null) {
+            foreach (self::$routes[$requestMethod] as $key=>$value) {
+                $pattern = '/' . $key . '/';
+                $route = $route;
+
+                if (str_contains($pattern, '{') == false && str_contains($pattern, '}') == false) {
+                    continue;
+                }
+
+                $pattern = str_replace(['{', '}'], '', $pattern);
+
+                if (preg_match($pattern, $route)) {
+                    $action = self::$routes[$requestMethod][$key] ?? null;
+                }
+            }
+        }
 
         if ($action == null) {
             throw new RouteNotFoundException();
