@@ -6,7 +6,7 @@ This NOT a framework that should be used in production.
 
 ## Introduction
 
-This framework is build by the author go get a better understanding of the PHP fundamentals.
+This framework is build by the author to get a better understanding of the PHP fundamentals.
 
 The 'features' are selected by interest of the author. The author tried to add each 'feature' as a seperate commit.
 
