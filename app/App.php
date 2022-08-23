@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App;
 
 use Dotenv\Dotenv;
+use Monolog\Logger;
 use Twig\Environment;
 use Illuminate\Events\Dispatcher;
 use Twig\Loader\FilesystemLoader;
+use Monolog\Handler\StreamHandler;
 use Illuminate\Container\Container;
 use App\Services\DutchRailwayService;
 use App\Services\Payment\MollieGateway;
@@ -50,12 +52,21 @@ class App
 
         $this->initDatabase($this->config->db);
 
-        $this->registerRoutes($this->router);
+        if ($this->router instanceof Router) {
+            $this->registerRoutes($this->router);
 
-        $loader = new FilesystemLoader(VIEW_PATH);
-        $twig = new Environment($loader, [
-            'cache' => STORAGE_PATH . '/cache',
-        ]);
+            $loader = new FilesystemLoader(VIEW_PATH);
+            $twig = new Environment($loader, [
+                'cache' => STORAGE_PATH . '/cache',
+            ]);
+        }
+
+        $this->container->singleton(Logger::class, function () {
+            $logger = new Logger('main');
+            $logger->pushHandler(new StreamHandler(LOG_PATH . '/demo.log'));
+
+            return $logger;
+        });
 
         $this->container->singleton(Environment::class, fn () => $twig);
 

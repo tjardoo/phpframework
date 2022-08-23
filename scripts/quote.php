@@ -1,5 +1,7 @@
 <?php
 
+// To run this command: php scripts/quote.php
+
 use App\App;
 use App\Concerns\PaymentGatewayServiceInterface;
 use App\Services\QuoteService;
@@ -13,4 +15,4 @@ $container = new Container();
 
 $container->get(QuoteService::class)->randomQuote();
 
-$container->get(PaymentGatewayServiceInterface::class)->charge(500);
+// $container->get(PaymentGatewayServiceInterface::class)->charge(500);

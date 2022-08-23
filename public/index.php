@@ -9,6 +9,7 @@ require __DIR__ . '/../vendor/autoload.php';
 define('VIEW_PATH', __DIR__ . '/../views');
 define('STORAGE_PATH', __DIR__ . '/../storage');
 define('ROUTES_PATH', __DIR__ . '/../routes');
+define('LOG_PATH', __DIR__ . '/../storage/logs');
 
 session_start();
 

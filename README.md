@@ -35,8 +35,9 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [X] Twig templating
 - [X] DTOs
 - [X] Curl
-- [ ] Tests
+- [X] Tests
 - [ ] Middleware
 - [ ] Illuminate/Database/Migrations
-- [ ] Log
+- [X] Log
 - [ ] Service Providers
+- [ ] Invokable controllers
