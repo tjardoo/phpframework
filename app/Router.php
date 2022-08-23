@@ -21,7 +21,7 @@ class Router
         return self::$routes;
     }
 
-    public static function addRoute(string $method, string $uri, callable|array $action): void
+    public static function addRoute(string $method, string $uri, callable|array|string $action): void
     {
         $route = new Route($method, $uri, $action);
 
@@ -133,6 +133,14 @@ class Router
                 if (method_exists($class, $method)) {
                     return call_user_func_array([$class, $method], $args);
                 }
+            }
+        }
+
+        if (is_string($action)) {
+            if (class_exists($action)) {
+                $class = $this->container->get($action);
+
+                call_user_func($class, ...$args);
             }
         }
 

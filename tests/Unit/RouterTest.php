@@ -58,7 +58,7 @@ class RouterTest extends TestCase
         $this->assertEquals('Hello Closure!', $this->router->resolve('/users', 'get'));
     }
 
-    public function test_it_resolves_a_route(): void
+    public function test_it_resolves_a_route_from_a_controller(): void
     {
         $anonymousUserController = new class () {
             public function index(): string
@@ -70,6 +70,21 @@ class RouterTest extends TestCase
         $this->router->register(new Route('get', '/users', [$anonymousUserController::class, 'index']));
 
         $this->assertEquals('Hello Anonymous Class!', $this->router->resolve('/users', 'get'));
+    }
+
+    public function test_it_resolves_a_route_from_an_invokable_controller(): void
+    {
+        $anonymousUserController = new class () {
+            public function __invoke(): string
+            {
+                return 'Hello Invokable Class!';
+            }
+        };
+
+        // TODO the anonymous class is correctly called in Router:143 but not working in this test case
+        $this->router->register(new Route('get', '/users', [$anonymousUserController::class, '__invoke']));
+
+        $this->assertEquals('Hello Invokable Class!', $this->router->resolve('/users', 'get'));
     }
 
     /** @dataProvider routeNotFoundCases */

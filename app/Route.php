@@ -11,26 +11,26 @@ class Route
 {
     public string $method;
     public string $uri;
-    public Closure|array $action;
+    public Closure|array|string $action;
 
-    public function __construct(string $method, string $uri, Closure|array $action)
+    public function __construct(string $method, string $uri, Closure|array|string $action)
     {
         $this->method = $method;
         $this->uri = $uri;
         $this->action = $action;
     }
 
-    public static function get(string $uri, Closure|array $action)
+    public static function get(string $uri, Closure|array|string $action)
     {
         Router::addRoute('get', $uri, $action);
     }
 
-    public static function post(string $uri, Closure|array $action)
+    public static function post(string $uri, Closure|array|string $action)
     {
         Router::addRoute('post', $uri, $action);
     }
 
-    public static function match(array $methods, string $uri, Closure|array $action)
+    public static function match(array $methods, string $uri, Closure|array|string $action)
     {
         foreach ($methods as $method) {
             if (in_array($method, ['get', 'post']) == false) {

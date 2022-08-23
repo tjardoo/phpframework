@@ -40,4 +40,4 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [ ] Illuminate/Database/Migrations
 - [X] Log
 - [ ] Service Providers
-- [ ] Invokable controllers
+- [X] Invokable controllers
