@@ -83,7 +83,7 @@ class Router
         $args = [];
         $route = explode('?', $requestUri)[0];
 
-        if (str_ends_with($route, '/')) {
+        if (str_ends_with($route, '/') && strlen($route) > 1) {
             $route = substr_replace($route, '', -1);
         }
 
