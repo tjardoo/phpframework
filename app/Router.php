@@ -9,14 +9,14 @@ use App\Exceptions\RouteNotFoundException;
 
 class Router
 {
-    private static array $routes;
+    private static array $routes = [];
 
     public function __construct(
         private Container $container
     ) {
     }
 
-    public function getRoutes(): array
+    public function routes(): array
     {
         return self::$routes;
     }
@@ -90,6 +90,10 @@ class Router
         // if (str_starts_with($route, '/')) {
         //     $route = substr($route, 1);
         // }
+
+        if (isset(self::$routes[$requestMethod]) == false) {
+            throw new RouteNotFoundException();
+        }
 
         $action = self::$routes[$requestMethod][$route] ?? null;
 
