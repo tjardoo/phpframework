@@ -5,42 +5,37 @@ declare(strict_types=1);
 namespace App;
 
 use Dotenv\Dotenv;
-use Monolog\Logger;
-use Twig\Environment;
-use Illuminate\Events\Dispatcher;
-use Twig\Loader\FilesystemLoader;
-use Monolog\Handler\StreamHandler;
+use App\Providers\ServiceProvider;
 use Illuminate\Container\Container;
+use App\Providers\LogServiceProvider;
 use App\Services\DutchRailwayService;
+use App\Providers\ViewServiceProvider;
 use App\Services\Payment\MollieGateway;
+use App\Providers\RoutingServiceProvider;
 use App\Exceptions\RouteNotFoundException;
 use App\Concerns\PaymentGatewayServiceInterface;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use App\Providers\DatabaseServiceProvider;
 
 class App
 {
-    private Config $config;
-
     public function __construct(
-        protected Container $container,
-        protected ?Router $router = null,
-        protected array $request = [],
+        public Container $container,
+        public ?Router $router = null,
+        public array $request = [],
     ) {
     }
 
-    private function initDatabase(array $config): void
+    public function registerServiceProviders(): void
     {
-        $capsule = new Capsule();
-
-        $capsule->addConnection($config);
-        $capsule->setEventDispatcher(new Dispatcher($this->container));
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
+        $this->register(new LogServiceProvider($this));
+        $this->register(new DatabaseServiceProvider($this));
+        $this->register(new RoutingServiceProvider($this));
+        $this->register(new ViewServiceProvider($this));
     }
 
-    private function registerRoutes(Router $router): void
+    public function register(ServiceProvider $provider): void
     {
-        (new RouteFileRegistar($router))->register(ROUTES_PATH . '/web.php');
+        $provider->register();
     }
 
     public function boot(): static
@@ -48,31 +43,12 @@ class App
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
 
-        $this->config = new Config($_ENV);
+        $this->registerServiceProviders();
 
-        $this->initDatabase($this->config->db);
-
-        if ($this->router instanceof Router) {
-            $this->registerRoutes($this->router);
-
-            $loader = new FilesystemLoader(VIEW_PATH);
-            $twig = new Environment($loader, [
-                'cache' => STORAGE_PATH . '/cache',
-            ]);
-        }
-
-        $this->container->singleton(Logger::class, function () {
-            $logger = new Logger('main');
-            $logger->pushHandler(new StreamHandler(LOG_PATH . '/demo.log'));
-
-            return $logger;
-        });
-
-        $this->container->singleton(Environment::class, fn () => $twig);
+        $this->container->singleton(Config::class, fn () => (new Config($_ENV)));
 
         $this->container->bind(PaymentGatewayServiceInterface::class, MollieGateway::class);
-
-        $this->container->bind(DutchRailwayService::class, fn () => new DutchRailwayService($this->config->api['ns_api_key']));
+        $this->container->singleton(DutchRailwayService::class, fn () => new DutchRailwayService((new Config($_ENV))->api['ns_api_key']));
 
         return $this;
     }
