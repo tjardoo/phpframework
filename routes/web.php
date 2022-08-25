@@ -6,13 +6,17 @@ use App\Controllers\CurlController;
 use App\Controllers\HomeController;
 use App\Controllers\TaskController;
 use App\Controllers\InvokeController;
+use App\Middleware\AnotherLogMiddleware;
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->middleware(AnotherLogMiddleware::class);
 Route::get('/task', [TaskController::class, 'index']);
 Route::get('/curl', [CurlController::class, 'index']);
 Route::get('/log', [LogController::class, 'index']);
 Route::get('/invoke', InvokeController::class);
 
+Route::get('/test2/{value}', [HomeController::class, 'placeholderTester']);
+
+// TODO add middleware support to match routes
 Route::match(['get', 'post'], '/get-post-example', function () {
     dd('Get post example route');
 });
@@ -20,5 +24,3 @@ Route::match(['get', 'post'], '/get-post-example', function () {
 Route::get('/company/{company}/department/{department}', function ($company, $department) {
     echo "Company: {$company}, department: {$department}";
 });
-
-Route::get('/test2/{value}', [HomeController::class, 'placeholderTester']);

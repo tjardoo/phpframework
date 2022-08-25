@@ -36,7 +36,7 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [X] DTOs
 - [X] Curl
 - [X] Tests
-- [ ] Middleware
+- [X] Middleware
 - [ ] Illuminate/Database/Migrations
 - [X] Log
 - [X] Service Providers
@@ -44,3 +44,4 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [ ] Route names
 - [ ] Facades
 - [ ] Alias
+- [ ] Redirect

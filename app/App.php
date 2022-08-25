@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use Dotenv\Dotenv;
+use Illuminate\Pipeline\Pipeline;
 use App\Providers\ServiceProvider;
 use Illuminate\Container\Container;
 use App\Providers\LogServiceProvider;
@@ -13,8 +14,8 @@ use App\Providers\ViewServiceProvider;
 use App\Services\Payment\MollieGateway;
 use App\Providers\RoutingServiceProvider;
 use App\Exceptions\RouteNotFoundException;
-use App\Concerns\PaymentGatewayServiceInterface;
 use App\Providers\DatabaseServiceProvider;
+use App\Concerns\PaymentGatewayServiceInterface;
 
 class App
 {
@@ -55,8 +56,46 @@ class App
 
     public function run()
     {
+        $route = $this->router->resolve($this->request['uri'], strtolower($this->request['method']));
+
+        (new Pipeline($this->container))
+            ->send($this->request)
+            ->through($this->router->gatherMiddleware($route['middleware'] ?? []))
+            ->then(function () use ($route) {
+                $this->dispatch($route['action'] ?? null, $route['args'] ?? []);
+            });
+    }
+
+    private function dispatch(callable|array|string|null $action, array $args = [])
+    {
         try {
-            echo $this->router->resolve($this->request['uri'], strtolower($this->request['method']));
+            if ($action == null) {
+                throw new RouteNotFoundException();
+            }
+
+            if (is_callable($action)) {
+                echo call_user_func($action, ...$args);
+            }
+
+            if (is_array($action)) {
+                [$class, $method] = $action;
+
+                if (class_exists($class)) {
+                    $class = $this->container->get($class);
+
+                    if (method_exists($class, $method)) {
+                        echo call_user_func_array([$class, $method], $args);
+                    }
+                }
+            }
+
+            if (is_string($action)) {
+                if (class_exists($action)) {
+                    $class = $this->container->get($action);
+
+                    echo call_user_func($class, ...$args);
+                }
+            }
         } catch (RouteNotFoundException) {
             http_response_code(404);
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App;
 
 use Illuminate\Container\Container;
-use App\Exceptions\RouteNotFoundException;
 
 class Router
 {
@@ -21,11 +20,29 @@ class Router
         return self::$routes;
     }
 
-    public static function addRoute(string $method, string $uri, callable|array|string $action): void
+    public static function addRouteByRoute(Route $route): Route
+    {
+        self::register($route);
+
+        return $route;
+    }
+
+    public static function addRoute(string $method, string $uri, callable|array|string $action): Route
     {
         $route = new Route($method, $uri, $action);
 
         self::register($route);
+
+        return $route;
+    }
+
+    public function gatherMiddleware(array $customMiddleware): array
+    {
+        $baseMiddleware = [
+            \App\Middleware\LogMiddleware::class,
+        ];
+
+        return array_merge($baseMiddleware, $customMiddleware);
     }
 
     public static function register(Route $route): void
@@ -36,7 +53,8 @@ class Router
         preg_match_all("/(?<={).+?(?=})/", $route->uri, $paramMatches);
 
         if (empty($paramMatches[0])) {
-            self::$routes[$route->method][$route->uri] = $route->action;
+            self::$routes[$route->method][$route->uri]['action'] = $route->action;
+            self::$routes[$route->method][$route->uri]['middleware'] = $route->middleware;
 
             return;
         }
@@ -75,32 +93,30 @@ class Router
 
         $requestUri = str_replace("/", '\\/', $requestUri);
 
-        self::$routes[$route->method][$requestUri] = $route->action;
+        self::$routes[$route->method][$requestUri]['action'] = $route->action;
+        self::$routes[$route->method][$requestUri]['middleware'] = $route->middleware;
     }
 
-    public function resolve(string $requestUri, string $requestMethod)
+    public function resolve(string $requestUri, string $requestMethod): ?array
     {
-        $args = [];
         $route = explode('?', $requestUri)[0];
+
 
         if (str_ends_with($route, '/') && strlen($route) > 1) {
             $route = substr_replace($route, '', -1);
         }
 
-        // if (str_starts_with($route, '/')) {
-        //     $route = substr($route, 1);
-        // }
 
         if (isset(self::$routes[$requestMethod]) == false) {
-            throw new RouteNotFoundException();
+            return null;
         }
 
-        $action = self::$routes[$requestMethod][$route] ?? null;
 
-        if ($action == null) {
+        $route = self::$routes[$requestMethod][$route] ?? null;
+
+        if (isset($route['action']) == false) {
             foreach (self::$routes[$requestMethod] as $key=>$value) {
                 $pattern = '/' . $key . '/';
-                $route = $route;
 
                 if (str_contains($pattern, '{') == false && str_contains($pattern, '}') == false) {
                     continue;
@@ -108,43 +124,15 @@ class Router
 
                 $pattern = str_replace(['{', '}'], '', $pattern);
 
-                if (preg_match($pattern, $route)) {
-                    $args = $this->getParametersFromUri($key, $route);
-
-                    $action = self::$routes[$requestMethod][$key] ?? null;
+                if (preg_match($pattern, $requestUri)) {
+                    $route['args'] = $this->getParametersFromUri($key, $requestUri);
+                    $route['action'] = self::$routes[$requestMethod][$key]['action'] ?? null;
+                    $route['middleware'] = self::$routes[$requestMethod][$key]['middleware'] ?? null;
                 }
             }
         }
 
-        if ($action == null) {
-            throw new RouteNotFoundException();
-        }
-
-        if (is_callable($action)) {
-            return call_user_func($action, ...$args);
-        }
-
-        if (is_array($action)) {
-            [$class, $method] = $action;
-
-            if (class_exists($class)) {
-                $class = $this->container->get($class);
-
-                if (method_exists($class, $method)) {
-                    return call_user_func_array([$class, $method], $args);
-                }
-            }
-        }
-
-        if (is_string($action)) {
-            if (class_exists($action)) {
-                $class = $this->container->get($action);
-
-                call_user_func($class, ...$args);
-            }
-        }
-
-        throw new RouteNotFoundException();
+        return $route;
     }
 
     private function getParametersFromUri(string $uriDefinition, string $requestUri): array
