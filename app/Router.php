@@ -11,7 +11,7 @@ class Router
     private static array $routes = [];
 
     public function __construct(
-        private Container $container
+        public Container $container
     ) {
     }
 
@@ -20,17 +20,8 @@ class Router
         return self::$routes;
     }
 
-    public static function addRouteByRoute(Route $route): Route
+    public static function addRoute(Route $route): Route
     {
-        self::register($route);
-
-        return $route;
-    }
-
-    public static function addRoute(string $method, string $uri, callable|array|string $action): Route
-    {
-        $route = new Route($method, $uri, $action);
-
         self::register($route);
 
         return $route;
@@ -106,11 +97,9 @@ class Router
             $route = substr_replace($route, '', -1);
         }
 
-
         if (isset(self::$routes[$requestMethod]) == false) {
             return null;
         }
-
 
         $route = self::$routes[$requestMethod][$route] ?? null;
 

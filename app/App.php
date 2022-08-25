@@ -34,6 +34,25 @@ class App
         $this->register(new ViewServiceProvider($this));
     }
 
+    public function registerDirectories(): void
+    {
+        if (defined('VIEW_PATH') == false) {
+            define('VIEW_PATH', __DIR__ . '/../views');
+        };
+
+        if (defined('STORAGE_PATH') == false) {
+            define('STORAGE_PATH', __DIR__ . '/../storage');
+        };
+
+        if (defined('ROUTES_PATH') == false) {
+            define('ROUTES_PATH', __DIR__ . '/../routes');
+        };
+
+        if (defined('LOG_PATH') == false) {
+            define('LOG_PATH', __DIR__ . '/../storage/logs');
+        };
+    }
+
     public function register(ServiceProvider $provider): void
     {
         $provider->register();
@@ -43,6 +62,8 @@ class App
     {
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
+
+        $this->registerDirectories();
 
         $this->registerServiceProviders();
 
@@ -62,11 +83,11 @@ class App
             ->send($this->request)
             ->through($this->router->gatherMiddleware($route['middleware'] ?? []))
             ->then(function () use ($route) {
-                $this->dispatch($route['action'] ?? null, $route['args'] ?? []);
+                echo $this->dispatch($route['action'] ?? null, $route['args'] ?? []);
             });
     }
 
-    private function dispatch(callable|array|string|null $action, array $args = [])
+    public function dispatch(callable|array|string|null $action, array $args = [])
     {
         try {
             if ($action == null) {
@@ -74,7 +95,7 @@ class App
             }
 
             if (is_callable($action)) {
-                echo call_user_func($action, ...$args);
+                return call_user_func($action, ...$args);
             }
 
             if (is_array($action)) {
@@ -84,7 +105,7 @@ class App
                     $class = $this->container->get($class);
 
                     if (method_exists($class, $method)) {
-                        echo call_user_func_array([$class, $method], $args);
+                        return call_user_func_array([$class, $method], $args);
                     }
                 }
             }
@@ -93,13 +114,15 @@ class App
                 if (class_exists($action)) {
                     $class = $this->container->get($action);
 
-                    echo call_user_func($class, ...$args);
+                    return call_user_func($class, ...$args);
                 }
             }
+
+            throw new RouteNotFoundException();
         } catch (RouteNotFoundException) {
             http_response_code(404);
 
-            echo View::make('errors/404');
+            return View::make('errors/404');
         }
     }
 }

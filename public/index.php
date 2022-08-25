@@ -1,23 +1,9 @@
 <?php
 
-use App\App;
-use App\Router;
-use Illuminate\Container\Container;
-
 require __DIR__ . '/../vendor/autoload.php';
-
-define('VIEW_PATH', __DIR__ . '/../views');
-define('STORAGE_PATH', __DIR__ . '/../storage');
-define('ROUTES_PATH', __DIR__ . '/../routes');
-define('LOG_PATH', __DIR__ . '/../storage/logs');
 
 session_start();
 
-$container = new Container();
-$router = new Router($container);
+$app = require __DIR__.'/../bootstrap/app.php';
 
-(new App(
-    $container,
-    $router,
-    ['uri' => $_SERVER['REQUEST_URI'], 'method' => $_SERVER['REQUEST_METHOD']],
-))->boot()->run();
+$app->boot()->run();

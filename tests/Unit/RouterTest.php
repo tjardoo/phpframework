@@ -4,102 +4,48 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Exceptions\RouteNotFoundException;
 use App\Route;
-use App\Router;
-use PHPUnit\Framework\TestCase;
-use Illuminate\Container\Container;
+use Tests\TestCase;
 
 class RouterTest extends TestCase
 {
-    protected function setUp(): void
+    public function test_it_can_visit_the_homepage(): void
     {
-        $this->router = new Router(new Container());
-    }
+        $result = $this->app->router->resolve('/', 'get')['action'];
 
-    public function test_there_are_no_routes_by_default()
-    {
-        $this->assertEmpty($this->router->routes());
+        $response = $this->app->dispatch($result);
+
+        $this->assertStringContainsString('Welcome', $response);
     }
 
     public function test_it_can_register_a_get_route(): void
     {
-        $this->router->register(new Route('get', '/users', ['UserController', 'index']));
+        $this->app->router->register(new Route('get', '/users', ['UserController', 'index']));
 
         $expected = [
-            'get' => [
-                '/users' => ['UserController', 'index'],
-            ],
+            'action' => ['UserController', 'index'],
+            'middleware' => [],
         ];
 
-        $this->assertEquals($expected, $this->router->routes());
+        $this->assertEquals($expected, $this->app->router->routes()['get']['/users']);
     }
 
     public function test_it_can_register_a_post_route(): void
     {
-        $this->router->register(new Route('post', '/users', ['UserController', 'update']));
+        $this->app->router->register(new Route('post', '/users', ['UserController', 'index']));
 
         $expected = [
-            'get' => [
-                '/users' => ['UserController', 'index'],
-            ],
-            'post' => [
-                '/users' => ['UserController', 'update'],
-            ],
+            'action' => ['UserController', 'index'],
+            'middleware' => [],
         ];
 
-        $this->assertEquals($expected, $this->router->routes());
+        $this->assertEquals($expected, $this->app->router->routes()['post']['/users']);
     }
 
-    public function test_it_resolves_a_route_from_a_closure(): void
+    public function test_it_throws_a_404_error_when_a_route_is_not_found(): void
     {
-        $this->router->register(new Route('get', '/users', fn () => 'Hello Closure!'));
+        $this->app->dispatch('/not-existing-route');
 
-        $this->assertEquals('Hello Closure!', $this->router->resolve('/users', 'get'));
-    }
-
-    public function test_it_resolves_a_route_from_a_controller(): void
-    {
-        $anonymousUserController = new class () {
-            public function index(): string
-            {
-                return 'Hello Anonymous Class!';
-            }
-        };
-
-        $this->router->register(new Route('get', '/users', [$anonymousUserController::class, 'index']));
-
-        $this->assertEquals('Hello Anonymous Class!', $this->router->resolve('/users', 'get'));
-    }
-
-    public function test_it_resolves_a_route_from_an_invokable_controller(): void
-    {
-        $anonymousUserController = new class () {
-            public function __invoke(): string
-            {
-                return 'Hello Invokable Class!';
-            }
-        };
-
-        // TODO the anonymous class is correctly called in Router:143 but not working in this test case
-        $this->router->register(new Route('get', '/users', [$anonymousUserController::class, '__invoke']));
-
-        $this->assertEquals('Hello Invokable Class!', $this->router->resolve('/users', 'get'));
-    }
-
-    /** @dataProvider routeNotFoundCases */
-    public function test_it_throws_a_route_not_found_exception($requestUri, $requestMethod): void
-    {
-        $this->expectException(RouteNotFoundException::class);
-
-        $this->router->resolve($requestUri, $requestMethod);
-    }
-
-    public function routeNotFoundCases(): array
-    {
-        return [
-            ['/invoices', 'get'],
-            ['/users/abc', 'post'],
-        ];
+        $this->assertEquals(404, http_response_code());
     }
 }

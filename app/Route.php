@@ -25,21 +25,21 @@ class Route
     {
         array_push($this->middleware, $name);
 
-        $route = Router::addRouteByRoute($this);
+        $route = Router::addRoute($this);
 
         return $route;
     }
 
     public static function get(string $uri, Closure|array|string $action): Route
     {
-        $route = Router::addRoute('get', $uri, $action);
+        $route = Router::addRoute(new Route('get', $uri, $action));
 
         return $route;
     }
 
     public static function post(string $uri, Closure|array|string $action): Route
     {
-        $route = Router::addRoute('post', $uri, $action);
+        $route = Router::addRoute(new Route('post', $uri, $action));
 
         return $route;
     }
@@ -53,7 +53,7 @@ class Route
                 throw new RouteMethodNotSupportedException("Method {$method} not supported. Only get, post are supported.");
             }
 
-            $route = Router::addRoute($method, $uri, $action);
+            $route = Router::addRoute(new Route('post', $uri, $action));
 
             array_push($routes, $route);
         }
