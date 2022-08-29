@@ -13,6 +13,7 @@ class Route
     public string $uri;
     public Closure|array|string $action;
     public array $middleware = [];
+    public ?string $name = null;
 
     public function __construct(string $method, string $uri, Closure|array|string $action)
     {
@@ -25,23 +26,24 @@ class Route
     {
         array_push($this->middleware, $name);
 
-        $route = Router::addRoute($this);
+        return Router::addRoute($this);
+    }
 
-        return $route;
+    public function name(string $name): Route
+    {
+        $this->name = $name;
+
+        return Router::addRoute($this);
     }
 
     public static function get(string $uri, Closure|array|string $action): Route
     {
-        $route = Router::addRoute(new Route('get', $uri, $action));
-
-        return $route;
+        return Router::addRoute(new Route('get', $uri, $action));
     }
 
     public static function post(string $uri, Closure|array|string $action): Route
     {
-        $route = Router::addRoute(new Route('post', $uri, $action));
-
-        return $route;
+        return Router::addRoute(new Route('post', $uri, $action));
     }
 
     public static function match(array $methods, string $uri, Closure|array|string $action): array

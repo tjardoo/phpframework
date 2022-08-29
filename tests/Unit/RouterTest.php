@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use App\Exceptions\RouteNameNotFoundException;
 use App\Route;
+use App\Router;
 use Tests\TestCase;
 
 class RouterTest extends TestCase
@@ -47,5 +49,12 @@ class RouterTest extends TestCase
         $this->app->dispatch('/not-existing-route');
 
         $this->assertEquals(404, http_response_code());
+    }
+
+    public function test_it_can_resolve_a_route_by_name(): void
+    {
+        $this->app->router->register((new Route('get', '/demo-1234', fn () => 'Hello Demo 1324!'))->name('demo-example'));
+
+        $this->assertEquals('/demo-1234', Router::getRouteByName('demo-example'));
     }
 }

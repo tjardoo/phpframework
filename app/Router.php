@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Exceptions\RouteNameNotFoundException;
+use Closure;
 use Illuminate\Container\Container;
 
 class Router
 {
     private static array $routes = [];
+
+    public static array $routeNames = [];
 
     public function __construct(
         public Container $container
@@ -18,6 +22,22 @@ class Router
     public function routes(): array
     {
         return self::$routes;
+    }
+
+    public static function routeNames(): array
+    {
+        return self::$routeNames;
+    }
+
+    public static function getRouteByName(string $name): string
+    {
+        $route = self::$routeNames[$name];
+
+        if ($route == null) {
+            throw new RouteNameNotFoundException("Route name '{$name}' not found.");
+        }
+
+        return $route;
     }
 
     public static function addRoute(Route $route): Route
@@ -44,8 +64,7 @@ class Router
         preg_match_all("/(?<={).+?(?=})/", $route->uri, $paramMatches);
 
         if (empty($paramMatches[0])) {
-            self::$routes[$route->method][$route->uri]['action'] = $route->action;
-            self::$routes[$route->method][$route->uri]['middleware'] = $route->middleware;
+            self::setRoute($route->method, $route->uri, $route);
 
             return;
         }
@@ -84,8 +103,17 @@ class Router
 
         $requestUri = str_replace("/", '\\/', $requestUri);
 
-        self::$routes[$route->method][$requestUri]['action'] = $route->action;
-        self::$routes[$route->method][$requestUri]['middleware'] = $route->middleware;
+        self::setRoute($route->method, $requestUri, $route);
+    }
+
+    private static function setRoute(string $method, string $uri, Route $route)
+    {
+        self::$routes[$method][$uri]['action'] = $route->action;
+        self::$routes[$method][$uri]['middleware'] = $route->middleware;
+
+        if ($route->name != null) {
+            self::$routeNames[$route->name] = $uri;
+        }
     }
 
     public function resolve(string $requestUri, string $requestMethod): ?array

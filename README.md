@@ -41,7 +41,8 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [X] Log
 - [X] Service Providers
 - [X] Invokable controllers
-- [ ] Route names
+- [X] Route names
 - [ ] Facades
 - [ ] Alias
 - [ ] Redirect
+- [ ] TailwindCSS

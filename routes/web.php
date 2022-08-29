@@ -8,9 +8,9 @@ use App\Controllers\TaskController;
 use App\Controllers\InvokeController;
 use App\Middleware\AnotherLogMiddleware;
 
-Route::get('/', [HomeController::class, 'index'])->middleware(AnotherLogMiddleware::class);
-Route::get('/task', [TaskController::class, 'index']);
-Route::get('/curl', [CurlController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->middleware(AnotherLogMiddleware::class)->name('homepage');
+Route::get('/task', [TaskController::class, 'index'])->name('tasks');
+Route::get('/curl', [CurlController::class, 'index'])->name('dutch-railway-example');
 Route::get('/log', [LogController::class, 'index']);
 Route::get('/invoke', InvokeController::class);
 
