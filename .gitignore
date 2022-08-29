@@ -3,3 +3,4 @@
 /storage/cache/*
 /storage/logs/*
 .phpunit.result.cache
+/node_modules

@@ -9,7 +9,6 @@ use Twig\Environment;
 use Twig\TwigFunction;
 use Twig\Loader\FilesystemLoader;
 use App\Providers\ServiceProvider;
-use Twig\TwigFilter;
 
 class ViewServiceProvider extends ServiceProvider
 {

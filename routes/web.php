@@ -9,6 +9,7 @@ use App\Controllers\InvokeController;
 use App\Middleware\AnotherLogMiddleware;
 
 Route::get('/', [HomeController::class, 'index'])->middleware(AnotherLogMiddleware::class)->name('homepage');
+Route::get('/no-twig', [HomeController::class, 'welcomeWithoutTwig']);
 Route::get('/task', [TaskController::class, 'index'])->name('tasks');
 Route::get('/curl', [CurlController::class, 'index'])->name('dutch-railway-example');
 Route::get('/log', [LogController::class, 'index']);

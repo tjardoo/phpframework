@@ -3,6 +3,8 @@
 
 <head>
     <title>PHP Framework</title>
+
+    <link href="/css/app.css" rel="stylesheet">
 </head>
 
 <body>

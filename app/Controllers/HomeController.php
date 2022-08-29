@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Config;
-use App\Facades\MyClassFacade;
 use Monolog\Logger;
 use App\Models\User;
+use App\View;
 use Twig\Environment as Twig;
 
 class HomeController
@@ -29,6 +29,11 @@ class HomeController
             'foo' => 'bar',
             'user' => $user,
         ]);
+    }
+
+    public function welcomeWithoutTwig(): View
+    {
+        return View::make('welcome-2');
     }
 
     public function placeholderTester(string $foo): string
