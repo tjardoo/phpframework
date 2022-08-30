@@ -1,0 +1,37 @@
+{# views/templates/base.html.twig #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <title>{% block title %}My Application{% endblock %}</title>
+
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="/css/app.css"/>
+        {% endblock %}
+    </head>
+    <body>
+        <div class="flex">
+            {% block body %}
+                <div id="sidebar">
+                    {% block sidebar %}
+                        <aside class="w-64">
+                        <div class="h-screen px-3 py-4 overflow-y-auto bg-gray-100">
+                            <ul class="space-y-2">
+                                <li class="hover:font-semibold"><a href="{{ route('homepage') }}">Home</a></li>
+                                <li class="hover:font-semibold"><a href="{{ route('tasks') }}">Tasks</a></li>
+                                <li class="hover:font-semibold"><a href="{{ route('dutch-railway-example') }}">NS API Example</a></li>
+                                <li class="hover:font-semibold"><a href="{{ route('log') }}">Log Example</a></li>
+                                <li class="hover:font-semibold"><a href="{{ route('invoke') }}">Invokable Controller</a></li>
+                            </ul>
+                        </aside>
+                    {% endblock %}
+                </div>
+
+                <div id="content" class="p-6">
+                    {% block content %}{% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+    </body>
+</html>

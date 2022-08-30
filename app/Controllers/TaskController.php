@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Task;
-use App\View;
+use Twig\Environment as Twig;
 
 class TaskController
 {
-    public function index(): View
+    public function __construct(
+        private Twig $twig,
+    ) {
+    }
+
+    public function index(): string
     {
         $tasks = Task::query()->get();
 
-        dd($tasks);
-
-        return View::make('tasks/index');
+        return $this->twig->render('templates/tasks/index.html.twig', [
+            'tasks' => $tasks,
+        ]);
     }
 }

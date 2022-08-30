@@ -1,0 +1,13 @@
+{# views/templates/tasks/index.html.twig #}
+{% extends 'templates/tasks/layout.html.twig' %}
+
+{% block title %}Tasks Index{% endblock %}
+
+{% block page_contents %}
+    {% for task in tasks %}
+    <div class="mb-4">
+        <h2 class="font-semibold">{{ task.description }}</h2>
+        <p>{{ task.completed_at }}</p>
+    </div>
+    {% endfor %}
+{% endblock %}

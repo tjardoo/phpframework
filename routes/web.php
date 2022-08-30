@@ -12,8 +12,8 @@ Route::get('/', [HomeController::class, 'index'])->middleware(AnotherLogMiddlewa
 Route::get('/no-twig', [HomeController::class, 'welcomeWithoutTwig']);
 Route::get('/task', [TaskController::class, 'index'])->name('tasks');
 Route::get('/curl', [CurlController::class, 'index'])->name('dutch-railway-example');
-Route::get('/log', [LogController::class, 'index']);
-Route::get('/invoke', InvokeController::class);
+Route::get('/log', [LogController::class, 'index'])->name('log');
+Route::get('/invoke', InvokeController::class)->name('invoke');
 
 Route::get('/test2/{value}', [HomeController::class, 'placeholderTester']);
 
