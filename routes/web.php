@@ -8,7 +8,6 @@ use App\Controllers\TaskController;
 use App\Controllers\InvokeController;
 use App\Middleware\AnotherLogMiddleware;
 use App\Router;
-use App\Routing\Redirect;
 
 Route::get('/', [HomeController::class, 'index'])->middleware(AnotherLogMiddleware::class)->name('homepage');
 Route::get('/no-twig', [HomeController::class, 'welcomeWithoutTwig']);
@@ -29,9 +28,9 @@ Route::get('/company/{company}/department/{department}', function ($company, $de
 });
 
 Route::get('/away', function () {
-    Redirect::to('/log');
+    redirect('/log');
 });
 
 Route::get('/away-named-route', function () {
-    Redirect::to(Router::getRouteByName('log'));
+    redirect(Router::getRouteByName('log'));
 });
