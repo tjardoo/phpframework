@@ -1,0 +1,13 @@
+{# views/upload.html.twig #}
+{% extends 'templates/base.html.twig' %}
+
+{% block content %}
+    <h1 class="mb-8 text-xl font-semibold text-blue-500">Upload Example</h1>
+
+    <form action="{{ route('upload.store') }}" method="POST" enctype="multipart/form-data">
+        <input type="file" name="avatar" />
+        <button type="submit" class="px-3 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600">Upload</button>
+    </form>
+
+    {% block page_contents %}{% endblock %}
+{% endblock %}

@@ -25,7 +25,7 @@ class HomeController
 
         $this->logger->debug('This is a test with config variable: ' . $this->config->db['driver']);
 
-        return $this->twig->render('welcome.twig', [
+        return $this->twig->render('welcome.html.twig', [
             'foo' => 'bar',
             'user' => $user,
         ]);

@@ -22,13 +22,13 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [X] Models
 - [X] Services
 - [X] Entities
-- [ ] Uploads
+- [X] Uploads
 - [X] Sessions
 - [X] Cookies
 - [X] Layouts
 - [X] dd
 - [X] config
-- [ ] Helpers
+- [X] Helpers
 - [X] Commands
 - [X] Relations
 - [X] Route file(s)
@@ -43,6 +43,7 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [X] Invokable controllers
 - [X] Route names
 - [ ] Facades
-- [ ] Alias
+- [X] Alias
 - [X] Redirect
 - [X] TailwindCSS
+- [ ] Stubs

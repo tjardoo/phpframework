@@ -1,5 +1,6 @@
 <?php
 
+use App\Router;
 use App\Routing\Redirect;
 
 if (!function_exists('dd')) {
@@ -17,5 +18,14 @@ if (!function_exists('redirect')) {
         $args = func_get_args();
 
         Redirect::to(...$args);
+    }
+}
+
+if (!function_exists('route')) {
+    function route()
+    {
+        $args = func_get_args();
+
+        return Router::getRouteByName(...$args);
     }
 }

@@ -2,5 +2,6 @@
 .env
 /storage/cache/*
 /storage/logs/*
+/storage/uploads/*
 .phpunit.result.cache
 /node_modules
