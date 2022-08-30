@@ -44,5 +44,5 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [X] Route names
 - [ ] Facades
 - [ ] Alias
-- [ ] Redirect
-- [ ] TailwindCSS
+- [X] Redirect
+- [X] TailwindCSS
