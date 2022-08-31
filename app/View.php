@@ -23,7 +23,7 @@ class View
 
     public function render($includeBaseLayout = true): string
     {
-        $viewPath = VIEW_PATH . '/' . $this->view . '.php';
+        $viewPath = path('view') . '/' . $this->view . '.php';
 
         if (file_exists($viewPath) == false) {
             throw new ViewNotFoundException();
@@ -36,7 +36,7 @@ class View
         ob_start();
 
         if ($includeBaseLayout) {
-            $baseViewPath = VIEW_PATH . '/' . View::BASE_LAYOUT. '.php';
+            $baseViewPath = path('view') . '/' . View::BASE_LAYOUT. '.php';
 
             include $baseViewPath;
         } else {

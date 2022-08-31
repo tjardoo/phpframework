@@ -14,9 +14,9 @@ class ViewServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $loader = new FilesystemLoader(VIEW_PATH);
+        $loader = new FilesystemLoader(path('view'));
         $twig = new Environment($loader, [
-            'cache' => STORAGE_PATH . '/cache',
+            'cache' => path('storage') . '/cache',
             'auto_reload' => true,
         ]);
 

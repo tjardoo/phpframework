@@ -43,8 +43,10 @@ class App
         $paths = require __DIR__ . '/../config/paths.php';
 
         foreach ($paths as $key => $value) {
-            if (defined($key) == false) {
-                define($key, $value);
+            $formattedKey = strtoupper($key) . '_PATH';
+
+            if (defined($formattedKey) == false) {
+                define($formattedKey, $value);
             };
         }
     }

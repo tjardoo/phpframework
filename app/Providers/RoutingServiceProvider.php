@@ -20,6 +20,6 @@ class RoutingServiceProvider extends ServiceProvider
 
     private function registerWebRoutes(Router $router): void
     {
-        (new RouteFileRegistar($router))->register(ROUTES_PATH . '/web.php');
+        (new RouteFileRegistar($router))->register(path('routes') . '/web.php');
     }
 }

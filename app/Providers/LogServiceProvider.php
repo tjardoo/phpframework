@@ -14,7 +14,7 @@ class LogServiceProvider extends ServiceProvider
     {
         $this->app->container->singleton(Logger::class, function () {
             $logger = new Logger('main');
-            $logger->pushHandler(new StreamHandler(LOG_PATH . '/demo.log'));
+            $logger->pushHandler(new StreamHandler(path('log') . '/demo.log'));
 
             return $logger;
         });

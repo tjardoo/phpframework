@@ -20,7 +20,7 @@ class UploadController
 
     public function store(): void
     {
-        $filePath = STORAGE_PATH . '/uploads/' . $_FILES['avatar']['name'];
+        $filePath = path('storage') . '/uploads/' . $_FILES['avatar']['name'];
 
         move_uploaded_file($_FILES['avatar']['tmp_name'], $filePath);
 

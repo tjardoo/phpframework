@@ -29,3 +29,12 @@ if (!function_exists('route')) {
         return Router::getRouteByName(...$args);
     }
 }
+
+if (!function_exists('path')) {
+    function path()
+    {
+        $arg = func_get_arg(0);
+
+        return constant(strtoupper($arg) . '_PATH');
+    }
+}
