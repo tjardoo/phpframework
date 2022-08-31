@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use Dotenv\Dotenv;
+use ReflectionClass;
 use Illuminate\Pipeline\Pipeline;
 use App\Providers\ServiceProvider;
 use Illuminate\Container\Container;
@@ -28,29 +29,24 @@ class App
 
     public function registerServiceProviders(): void
     {
-        $this->register(new LogServiceProvider($this));
-        $this->register(new DatabaseServiceProvider($this));
-        $this->register(new RoutingServiceProvider($this));
-        $this->register(new ViewServiceProvider($this));
+        $app = require __DIR__ . '/../config/app.php';
+
+        foreach ($app['providers'] as $provider) {
+            $reflectionClass = new ReflectionClass($provider);
+
+            $this->register($reflectionClass->newInstance($this));
+        }
     }
 
     public function registerDirectories(): void
     {
-        if (defined('VIEW_PATH') == false) {
-            define('VIEW_PATH', __DIR__ . '/../views');
-        };
+        $paths = require __DIR__ . '/../config/paths.php';
 
-        if (defined('STORAGE_PATH') == false) {
-            define('STORAGE_PATH', __DIR__ . '/../storage');
-        };
-
-        if (defined('ROUTES_PATH') == false) {
-            define('ROUTES_PATH', __DIR__ . '/../routes');
-        };
-
-        if (defined('LOG_PATH') == false) {
-            define('LOG_PATH', __DIR__ . '/../storage/logs');
-        };
+        foreach ($paths as $key => $value) {
+            if (defined($key) == false) {
+                define($key, $value);
+            };
+        }
     }
 
     public function register(ServiceProvider $provider): void
