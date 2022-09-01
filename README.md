@@ -47,5 +47,8 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [X] Redirect
 - [X] TailwindCSS
 - [ ] Stubs
-- [ ] Laravel Artisan
+- [X] Laravel Artisan
 - [X] Maintenance mode
+- [ ] Event/Listener
+- [ ] Http Kernel
+- [ ] Console Kernel

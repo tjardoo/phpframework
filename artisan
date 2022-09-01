@@ -1,16 +1,18 @@
 <?php
 
-// To run this command: php artisan
+use App\HttpKernel;
 
-use App\App;
-use Illuminate\Container\Container;
+// To run this command: php artisan
 
 require __DIR__ . '/vendor/autoload.php';
 
-$container = new Container();
+$app = require_once __DIR__.'/bootstrap/app.php';
 
-$app = (new App($container))->boot();
+$kernel = new HttpKernel($app);
 
-echo 'abc';
+$kernel->handle(
+    new Symfony\Component\Console\Input\ArgvInput(),
+    new Symfony\Component\Console\Output\ConsoleOutput()
+);
 
 exit;
