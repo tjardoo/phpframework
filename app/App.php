@@ -9,17 +9,15 @@ use ReflectionClass;
 use Illuminate\Pipeline\Pipeline;
 use App\Providers\ServiceProvider;
 use Illuminate\Container\Container;
-use App\Providers\LogServiceProvider;
 use App\Services\DutchRailwayService;
-use App\Providers\ViewServiceProvider;
 use App\Services\Payment\MollieGateway;
-use App\Providers\RoutingServiceProvider;
 use App\Exceptions\RouteNotFoundException;
-use App\Providers\DatabaseServiceProvider;
 use App\Concerns\PaymentGatewayServiceInterface;
 
 class App
 {
+    protected array $registeredServiceProviders = [];
+
     public function __construct(
         public Container $container,
         public ?Router $router = null,
@@ -34,7 +32,18 @@ class App
         foreach ($app['providers'] as $provider) {
             $reflectionClass = new ReflectionClass($provider);
 
-            $this->register($reflectionClass->newInstance($this));
+            $this->register($registeredProvider = $reflectionClass->newInstance($this));
+
+            $this->registeredServiceProviders[$provider] = $registeredProvider;
+        }
+    }
+
+    public function bootServiceProviders(): void
+    {
+        foreach ($this->registeredServiceProviders as $provider) {
+            if (method_exists($provider, 'boot')) {
+                call_user_func([$provider, 'boot']);
+            }
         }
     }
 
@@ -64,6 +73,8 @@ class App
         $this->registerDirectories();
 
         $this->registerServiceProviders();
+
+        $this->bootServiceProviders();
 
         $this->container->singleton(Config::class, fn () => (new Config($_ENV)));
 
