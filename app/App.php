@@ -134,4 +134,9 @@ class App
             return View::make('errors/404');
         }
     }
+
+    public function isDownForMaintenance(): bool
+    {
+        return file_exists(path('storage') . '/down');
+    }
 }

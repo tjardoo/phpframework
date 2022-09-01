@@ -50,6 +50,7 @@ class Router
     public function gatherMiddleware(array $customMiddleware): array
     {
         $baseMiddleware = [
+            \App\Middleware\CheckMaintenanceModeMiddleware::class,
             \App\Middleware\LogMiddleware::class,
         ];
 

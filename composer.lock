@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcc523570912093d50acde9352c186a3",
+    "content-hash": "b18826c6415519a246d0b84b994e6889",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -1914,12 +1914,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "26a0918c49178dcaecfcd04859362e9014e853f0"
+                "reference": "d1b738dd4c02f3d8cf4da69f53c5ed2f97807c53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/26a0918c49178dcaecfcd04859362e9014e853f0",
-                "reference": "26a0918c49178dcaecfcd04859362e9014e853f0",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d1b738dd4c02f3d8cf4da69f53c5ed2f97807c53",
+                "reference": "d1b738dd4c02f3d8cf4da69f53c5ed2f97807c53",
                 "shasum": ""
             },
             "require": {
@@ -2002,7 +2002,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-17T15:15:34+00:00"
+            "time": "2022-08-26T15:23:18+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4978,6 +4978,7 @@
         "symfony/cache": 20,
         "illuminate/database": 20,
         "illuminate/events": 20,
+        "symfony/console": 20,
         "symfony/var-dumper": 20
     },
     "prefer-stable": false,

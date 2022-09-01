@@ -1,8 +1,9 @@
 /vendor
+/node_modules
+/public/css/app.css
 .env
 /storage/cache/*
 /storage/logs/*
 /storage/uploads/*
+/storage/down
 .phpunit.result.cache
-/node_modules
-/public/css/app.css

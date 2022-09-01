@@ -1,0 +1,16 @@
+<?php
+
+// To run this command: php artisan
+
+use App\App;
+use Illuminate\Container\Container;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$container = new Container();
+
+$app = (new App($container))->boot();
+
+echo 'abc';
+
+exit;

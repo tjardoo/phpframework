@@ -8,7 +8,6 @@ use App\Controllers\TaskController;
 use App\Controllers\InvokeController;
 use App\Controllers\UploadController;
 use App\Middleware\AnotherLogMiddleware;
-use App\Router;
 
 Route::get('/', [HomeController::class, 'index'])->middleware(AnotherLogMiddleware::class)->name('homepage');
 Route::get('/no-twig', [HomeController::class, 'welcomeWithoutTwig']);
