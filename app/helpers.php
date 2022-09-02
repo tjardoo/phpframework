@@ -38,3 +38,20 @@ if (!function_exists('path')) {
         return constant(strtoupper($arg) . '_PATH');
     }
 }
+
+if (!function_exists('envx')) {
+    function envx()
+    {
+        $key = func_get_arg(0);
+
+        if (array_key_exists($key, $_ENV)) {
+            return $_ENV[$key];
+        }
+
+        if (func_num_args() > 1) {
+            return func_get_arg(1);
+        }
+
+        throw new Exception("ENV key {$key} not found");
+    }
+}

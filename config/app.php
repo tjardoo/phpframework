@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 return [
-    'url' => $_ENV['URL'] ?? 'localhost:8888',
+    'url' => envx('URL', 'localhost:8888'),
 
     'database' => [
-        'driver' => $_ENV['DB_DRIVER'],
-        'host' => $_ENV['DB_HOST'],
-        'database' => $_ENV['DB_DATABASE'],
-        'username' => $_ENV['DB_USER'],
-        'password' => $_ENV['DB_PASS'],
+        'driver' => envx('DB_DRIVER'),
+        'host' => envx('DB_HOST'),
+        'database' => envx('DB_DATABASE'),
+        'username' => envx('DB_USER'),
+        'password' => envx('DB_PASS'),
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
         'prefix' => '',
@@ -25,7 +25,7 @@ return [
 
     'services' => [
         'api' => [
-            'ns_api_key' => $_ENV['NS_API_KEY'],
+            'ns_api_key' => envx('NS_API_KEY'),
         ],
     ]
 ];
