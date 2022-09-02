@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Config;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -15,7 +14,7 @@ class DatabaseServiceProvider extends ServiceProvider
         $capsule = new Capsule();
 
         $capsule->addConnection($this->app->config->get('database'));
-        $capsule->setEventDispatcher(new Dispatcher($this->app->container));
+        // $capsule->setEventDispatcher(new Dispatcher($this->app->container));
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
     }

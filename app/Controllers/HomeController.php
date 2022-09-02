@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Config;
+use App\Event;
+use App\Events\OrderShipped;
 use Monolog\Logger;
 use App\Models\User;
 use App\View;
@@ -20,6 +22,8 @@ class HomeController
 
     public function index(): string
     {
+        OrderShipped::dispatch('1234');
+
         $user = User::find(1);
 
         $databaseDriver = Config::get('database.driver');

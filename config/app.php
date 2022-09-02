@@ -21,6 +21,7 @@ return [
         \App\Providers\DatabaseServiceProvider::class,
         \App\Providers\RoutingServiceProvider::class,
         \App\Providers\ViewServiceProvider::class,
+        \App\Providers\EventServiceProvider::class,
     ],
 
     'services' => [

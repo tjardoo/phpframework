@@ -49,6 +49,6 @@ The 'features' are selected by interest of the author. The author tried to add e
 - [ ] Stubs
 - [X] Laravel Artisan
 - [X] Maintenance mode
-- [ ] Event/Listener
+- [X] Event/Listener
 - [ ] Http Kernel
 - [ ] Console Kernel
