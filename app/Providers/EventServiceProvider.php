@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Event;
+use App\Events\OrderReturned;
 use App\Events\OrderShipped;
 use App\Providers\ServiceProvider;
 use App\Listeners\SendShipmentNotification;
@@ -16,6 +17,9 @@ class EventServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Event::subscribe(OrderShipped::class, SendShipmentNotification::class);
+        Event::subscribe(
+            [OrderShipped::class, OrderReturned::class],
+            SendShipmentNotification::class
+        );
     }
 }
