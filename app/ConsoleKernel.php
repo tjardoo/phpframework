@@ -22,6 +22,7 @@ class ConsoleKernel
     {
         $this->console->add(new \App\Commands\DownCommand($this->app));
         $this->console->add(new \App\Commands\UpCommand($this->app));
+        $this->console->add(new \App\Commands\ServeCommand($this->app));
     }
 
     public function handle(InputInterface $input, OutputInterface $output)

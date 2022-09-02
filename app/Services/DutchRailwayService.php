@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Config;
 use Carbon\Carbon;
 use RuntimeException;
 use GuzzleHttp\Client;
@@ -17,11 +18,6 @@ use GuzzleHttp\Exception\ConnectException;
 
 class DutchRailwayService
 {
-    public function __construct(
-        private string $apiKey,
-    ) {
-    }
-
     /**
      * List of departures for a specific station
      * @param string $station
@@ -32,7 +28,7 @@ class DutchRailwayService
         $baseUrl = 'https://gateway.apiportal.ns.nl/reisinformatie-api/api/v2/';
 
         $headers = [
-            'Ocp-Apim-Subscription-Key' => $this->apiKey,
+            'Ocp-Apim-Subscription-Key' => Config::get('services.api.ns_api_key'),
         ];
 
         $params = [

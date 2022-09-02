@@ -14,9 +14,7 @@ class DatabaseServiceProvider extends ServiceProvider
     {
         $capsule = new Capsule();
 
-        $config = new Config($_ENV);
-
-        $capsule->addConnection($config->db);
+        $capsule->addConnection($this->app->config->get('database'));
         $capsule->setEventDispatcher(new Dispatcher($this->app->container));
         $capsule->setAsGlobal();
         $capsule->bootEloquent();

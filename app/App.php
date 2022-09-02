@@ -18,6 +18,8 @@ class App
 {
     protected array $registeredServiceProviders = [];
 
+    public Config $config;
+
     public function __construct(
         public Container $container,
         public ?Router $router = null,
@@ -70,16 +72,17 @@ class App
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
 
+        $this->config = new Config(require __DIR__ . '/../config/app.php');
+
         $this->registerDirectories();
 
         $this->registerServiceProviders();
 
         $this->bootServiceProviders();
 
-        $this->container->singleton(Config::class, fn () => (new Config($_ENV)));
+        $this->container->singleton(Config::class, fn () => $this->config);
 
         $this->container->bind(PaymentGatewayServiceInterface::class, MollieGateway::class);
-        $this->container->singleton(DutchRailwayService::class, fn () => new DutchRailwayService((new Config($_ENV))->api['ns_api_key']));
 
         return $this;
     }

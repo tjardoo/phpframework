@@ -4,34 +4,38 @@ declare(strict_types=1);
 
 namespace App;
 
-/**
- * @property-read array $config
- */
 class Config
 {
-    protected array $config = [];
+    protected static array $items = [];
 
-    public function __construct(array $env)
+    public function __construct(array $items = [])
     {
-        $this->config = [
-            'db' => [
-                'driver' => $_ENV['DB_DRIVER'],
-                'host' => $_ENV['DB_HOST'],
-                'database' => $_ENV['DB_DATABASE'],
-                'username' => $_ENV['DB_USER'],
-                'password' => $_ENV['DB_PASS'],
-                'charset' => 'utf8',
-                'collation' => 'utf8_unicode_ci',
-                'prefix' => '',
-            ],
-            'api' => [
-                'ns_api_key' => $_ENV['NS_API_KEY'],
-            ],
-        ];
+        self::$items = $items;
     }
 
-    public function __get(string $name)
+    public static function get($keys, $default = null): mixed
     {
-        return $this->config[$name] ?? null;
+        $items = self::$items;
+
+        if ($keys == null) {
+            return $items;
+        }
+
+        $filteredItems = $items;
+
+        foreach (explode('.', $keys) as $key) {
+            if (array_key_exists($key, $filteredItems)) {
+                $filteredItems = $filteredItems[$key];
+            } else {
+                return $default;
+            }
+        }
+
+        return $filteredItems;
+    }
+
+    public static function all(): array
+    {
+        return self::$items;
     }
 }

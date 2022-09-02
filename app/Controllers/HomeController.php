@@ -15,7 +15,6 @@ class HomeController
     public function __construct(
         private Twig $twig,
         private Logger $logger,
-        private Config $config,
     ) {
     }
 
@@ -23,7 +22,9 @@ class HomeController
     {
         $user = User::find(1);
 
-        $this->logger->debug('This is a test with config variable: ' . $this->config->db['driver']);
+        $databaseDriver = Config::get('database.driver');
+
+        $this->logger->debug('This is a test with config variable: ' . $databaseDriver);
 
         return $this->twig->render('welcome.html.twig', [
             'foo' => 'bar',
