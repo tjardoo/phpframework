@@ -7,7 +7,7 @@ use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class HttpKernel
+class ConsoleKernel
 {
     protected App $app;
 

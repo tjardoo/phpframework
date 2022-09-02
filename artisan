@@ -1,6 +1,6 @@
 <?php
 
-use App\HttpKernel;
+use App\ConsoleKernel;
 
 // To run this command: php artisan
 
@@ -8,7 +8,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 $app = require_once __DIR__.'/bootstrap/app.php';
 
-$kernel = new HttpKernel($app);
+$kernel = new ConsoleKernel($app);
 
 $kernel->handle(
     new Symfony\Component\Console\Input\ArgvInput(),
